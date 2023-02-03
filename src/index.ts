@@ -1,7 +1,7 @@
 import express,{Request,Response} from 'express'
 
 
-const app = express()
+export const app = express()
 const port = 3000
 
 let test = new Date().toISOString()
@@ -41,7 +41,7 @@ let videosDB:Video[] = [
         availableResolutions:['144p']
     },
     {
-        id:2,
+        id:3,
         title:'tianic3',
         author:'nolan',
         canBeDownloaded: false,
@@ -101,6 +101,12 @@ app.delete('/hometask_01/api/videos/:id', (req:Request, res:Response) => {
 
 
 
+})
+
+
+app.delete('/ht_01/api/testing/all-data', (req:Request, res:Response) => {
+    videosDB = []
+    res.send(204)
 })
 
 app.post('/hometask_01/api/videos', (req:Request, res:Response) => {
