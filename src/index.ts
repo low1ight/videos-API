@@ -1,4 +1,5 @@
 import express,{Request,Response} from 'express'
+import {postNewVideoValidator} from "./validators/postNewVideoValidator";
 
 
 export const app = express()
@@ -109,8 +110,14 @@ app.delete('/ht_01/api/testing/all-data', (req:Request, res:Response) => {
     res.send(204)
 })
 
-app.post('/hometask_01/api/videos', (req:Request, res:Response) => {
-    if(req.body.title && req.body.author) {
+app.post('/hometask_01/api/videos', (req:Request<{},{title:string,author:string,availableResolutions:string[]}>, res:Response) => {
+        let err = postNewVideoValidator(req.body)
+        if(err) {
+            res.status(400)
+            res.send(err)
+            return
+        }
+
         let video:Video = {
             id:Date.now(),
             title:req.body.title,
@@ -119,11 +126,10 @@ app.post('/hometask_01/api/videos', (req:Request, res:Response) => {
             minAgeRestriction: 6,
             createdAt: test,
             publicationDate: test,
-            availableResolutions:['144p']
+            availableResolutions:req.body.availableResolutions
         }
         videosDB.push(video)
         res.send(video)
-    }
 })
 
 app.listen(port, () => {
