@@ -74,7 +74,7 @@ app.put('/hometask_01/api/videos/:id', (req:Request, res:Response) => {
             for(let key in foundVideo) {
                 if(req.body[key]) foundVideo[key] = req.body[key]
             }
-            res.sendStatus(204)
+            res.sendStatus(204).send(foundVideo)
         }
 
     }
@@ -122,7 +122,7 @@ app.post('/hometask_01/api/videos', (req:Request<{},{title:string,author:string,
             availableResolutions:req.body.availableResolutions
         }
         videosDB.push(video)
-        res.sendStatus(201).send(video)
+        res.status(201).json(video)
 })
 
 app.listen(port, () => {

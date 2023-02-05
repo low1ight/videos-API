@@ -14,7 +14,6 @@ export function postNewVideoValidator({title,author,availableResolutions}:postNe
     let titleErrors = stringFieldValidate(title,'title',40)
     if (titleErrors) errorArr.push(titleErrors)
 
-
     let authorErrors = stringFieldValidate(author,'author',20)
     if (authorErrors) errorArr.push(authorErrors)
 
