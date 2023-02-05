@@ -1,11 +1,11 @@
 import express,{Request,Response} from 'express'
 import {postNewVideoValidator} from "./validators/PostNewVideoValidator";
+import {putNewVideoValidator} from "./validators/putVideoValidator";
 
 
 export const app = express()
 const port = 3000
 
-let test = new Date().toISOString()
 app.use(express.json())
 
 
@@ -23,35 +23,14 @@ type Video = {
 let videosDB:Video[] = [
     {
         id:1,
-        title:'tianic',
-        author:'nolan',
+        title:'Dead Poets Society',
+        author:'Peter Weir',
         canBeDownloaded: false,
-        minAgeRestriction: 6,
-        createdAt: test,
-        publicationDate: test,
-        availableResolutions:['144p']
+        minAgeRestriction: 16,
+        createdAt: '2023-02-05T11:10:25.902Z',
+        publicationDate: '2023-02-06T11:10:25.902Z',
+        availableResolutions:['P144','P720']
     },
-    {
-        id:2,
-        title:'tianic2',
-        author:'nolan',
-        canBeDownloaded: false,
-        minAgeRestriction: 6,
-        createdAt: test,
-        publicationDate: test,
-        availableResolutions:['144p']
-    },
-    {
-        id:3,
-        title:'tianic3',
-        author:'nolan',
-        canBeDownloaded: false,
-        minAgeRestriction: 6,
-        createdAt: test,
-        publicationDate: test,
-        availableResolutions:['144p']
-    },
-
 ]
 
 
@@ -78,10 +57,18 @@ app.put('/hometask_01/api/videos/:id', (req:Request, res:Response) => {
 
     let foundVideo:any = videosDB.find(item => item.id === +req.params.id);
     if(foundVideo) {
-        for(let key in foundVideo) {
-            if(req.body[key]) foundVideo[key] = req.body[key]
+        let err = putNewVideoValidator(req.body)
+        if(err) {
+            res.status(400)
+            res.send(err)
+            return
+        } else {
+            for(let key in foundVideo) {
+                if(req.body[key]) foundVideo[key] = req.body[key]
+            }
+            res.send(foundVideo)
         }
-        res.send(foundVideo)
+
     }
     res.send(404)
 

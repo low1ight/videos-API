@@ -24,3 +24,16 @@ export const incorrectTypeError = (fieldError:string, requiredType:string) => {
 export const incorrectResolutionError = (incorrectResolution:string,fieldName:string) => {
     return createErrorMessage(`${incorrectResolution} resolution isn't correct!`,`${fieldName}`)
 }
+
+ export const valueIsToHigh = (maxValue:number,fieldName:string) => {
+     return createErrorMessage(`The value can't be higher than ${maxValue} `,`${fieldName}`)
+ }
+
+ export const valueIsToLow = (maxValue:number,fieldName:string) => {
+     return createErrorMessage(`The value can't be lower than ${maxValue} `,`${fieldName}`)
+ }
+
+ export const incorrectIsoDate = (fieldName:string) => {
+     return createErrorMessage(`The date isn't correct, require correct iso format`,`${fieldName}`)
+ }
+
