@@ -1,5 +1,5 @@
 import express,{Request,Response} from 'express'
-import {postNewVideoValidator} from "./validators/postNewVideoValidator";
+import {postNewVideoValidator} from "./validators/PostNewVideoValidator";
 
 
 export const app = express()
@@ -14,7 +14,7 @@ type Video = {
     title:string,
     author:string,
     canBeDownloaded: boolean,
-    minAgeRestriction: number,
+    minAgeRestriction: number | null,
     createdAt: string,
     publicationDate: string,
     availableResolutions:string[]
@@ -75,6 +75,7 @@ app.get('/hometask_01/api/videos/:id', (req:Request, res:Response) => {
 })
 
 app.put('/hometask_01/api/videos/:id', (req:Request, res:Response) => {
+
     let foundVideo:any = videosDB.find(item => item.id === +req.params.id);
     if(foundVideo) {
         for(let key in foundVideo) {
@@ -104,7 +105,6 @@ app.delete('/hometask_01/api/videos/:id', (req:Request, res:Response) => {
 
 })
 
-
 app.delete('/ht_01/api/testing/all-data', (req:Request, res:Response) => {
     videosDB = []
     res.send(204)
@@ -118,14 +118,18 @@ app.post('/hometask_01/api/videos', (req:Request<{},{title:string,author:string,
             return
         }
 
+
+       const createdAt = new Date();
+       const copiedDate = new Date(createdAt.getTime() + 86400000);
+
         let video:Video = {
             id:Date.now(),
             title:req.body.title,
             author:req.body.author,
             canBeDownloaded: false,
-            minAgeRestriction: 6,
-            createdAt: test,
-            publicationDate: test,
+            minAgeRestriction: null,
+            createdAt: createdAt.toISOString(),
+            publicationDate: copiedDate.toISOString(),
             availableResolutions:req.body.availableResolutions
         }
         videosDB.push(video)
@@ -135,3 +139,5 @@ app.post('/hometask_01/api/videos', (req:Request<{},{title:string,author:string,
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
+
+
