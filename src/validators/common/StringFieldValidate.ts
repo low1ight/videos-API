@@ -6,7 +6,7 @@ export const stringFieldValidate = (fieldValue:any, fieldName:string, maxLength:
 
     if(!fieldValue) err = fieldIsEmptyError(fieldName)
     else if(typeof fieldValue !== 'string') err = incorrectTypeError(`${fieldName}`,'string')
-    else if(fieldValue.length > 40) err = fieldIsTooLongError(`${fieldName}`,maxLength)
+    else if(fieldValue.length > maxLength) err = fieldIsTooLongError(`${fieldName}`,maxLength)
 
     return err
 }

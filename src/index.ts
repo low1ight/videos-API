@@ -74,7 +74,7 @@ app.put('/hometask_01/api/videos/:id', (req:Request, res:Response) => {
             for(let key in foundVideo) {
                 if(req.body[key]) foundVideo[key] = req.body[key]
             }
-            res.send(foundVideo)
+            res.sendStatus(204)
         }
 
     }
@@ -93,9 +93,6 @@ app.delete('/hometask_01/api/videos/:id', (req:Request, res:Response) => {
         return
     }
     res.send(404)
-
-
-
 
 
 })
@@ -125,7 +122,7 @@ app.post('/hometask_01/api/videos', (req:Request<{},{title:string,author:string,
             availableResolutions:req.body.availableResolutions
         }
         videosDB.push(video)
-        res.send(video)
+        res.sendStatus(201).send(video)
 })
 
 app.listen(port, () => {
