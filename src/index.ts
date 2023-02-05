@@ -34,13 +34,21 @@ let videosDB:Video[] = [
 ]
 
 
+app.delete('/hometask_01/api/testing/all-data', (req:Request, res:Response) => {
+    videosDB = []
+    res.send(204)
+})
+
+
 app.get('/', (req:Request, res:Response) => {
     res.send('Hello World!')
 })
 
+
 app.get('/hometask_01/api/videos', (req:Request, res:Response) => {
     res.send(videosDB)
 })
+
 
 app.get('/hometask_01/api/videos/:id', (req:Request, res:Response) => {
     let foundVideo = videosDB.find(item => item.id === +req.params.id);
@@ -92,10 +100,7 @@ app.delete('/hometask_01/api/videos/:id', (req:Request, res:Response) => {
 
 })
 
-app.delete('/ht_01/api/testing/all-data', (req:Request, res:Response) => {
-    videosDB = []
-    res.send(204)
-})
+
 
 app.post('/hometask_01/api/videos', (req:Request<{},{title:string,author:string,availableResolutions:string[]}>, res:Response) => {
         let err = postNewVideoValidator(req.body)
