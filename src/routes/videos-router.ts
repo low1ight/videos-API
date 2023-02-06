@@ -1,9 +1,15 @@
 import {Request, Response, Router} from "express";
 import {putNewVideoValidator} from "../validators/putVideoValidator";
 import {postNewVideoValidator} from "../validators/PostNewVideoValidator";
-import {videosDB,Video,setVideoDB} from "../videosDB";
+import {videosDB,VideoType,setVideoDB} from "../videosDB";
+import {RequestWithBody, RequestWithParams, RequestWithParamsAndBody} from "../types";
+import {UpdateVideoModel} from "../models/UpdateVideoModel";
+import {CreateVideoModel} from "../models/CreateVideoModel";
+import {UriParamsVideoIdModel} from "../models/UriParamsVideoIdModel";
 
 export const videosRouter = Router({})
+
+
 
 
 
@@ -11,7 +17,9 @@ videosRouter.get('/', (req:Request, res:Response) => {
     res.send(videosDB)
 })
 
-videosRouter.get('/:id', (req:Request, res:Response) => {
+
+
+videosRouter.get('/:id', (req:RequestWithParams<UriParamsVideoIdModel>, res:Response) => {
     let foundVideo = videosDB.find(item => item.id === +req.params.id);
     if(foundVideo) {
         res.send(foundVideo)
@@ -19,10 +27,9 @@ videosRouter.get('/:id', (req:Request, res:Response) => {
     }
     res.send(404)
 
-
 })
 
-videosRouter.put('/:id', (req:Request, res:Response) => {
+videosRouter.put('/:id', (req:RequestWithParamsAndBody<UriParamsVideoIdModel,UpdateVideoModel>, res:Response) => {
 
     let foundVideo:any = videosDB.find(item => item.id === +req.params.id);
     if(foundVideo) {
@@ -33,18 +40,17 @@ videosRouter.put('/:id', (req:Request, res:Response) => {
             return
         } else {
             for(let key in foundVideo) {
-                if(req.body[key]) foundVideo[key] = req.body[key]
+                if(req.body[key as keyof UpdateVideoModel]) foundVideo[key] = req.body[key as keyof UpdateVideoModel]
             }
-            res.sendStatus(204).send(foundVideo)
+            res.status(204).send(foundVideo)
         }
 
     }
     res.send(404)
 
-
 })
 
-videosRouter.delete('/:id', (req:Request, res:Response) => {
+videosRouter.delete('/:id', (req:RequestWithParams<UriParamsVideoIdModel>, res:Response) => {
 
     let filteredArr = videosDB.filter(item => item.id !== +req.params.id)
 
@@ -58,7 +64,7 @@ videosRouter.delete('/:id', (req:Request, res:Response) => {
 
 })
 
-videosRouter.post('/', (req:Request<{},{title:string,author:string,availableResolutions:string[]}>, res:Response) => {
+videosRouter.post('/', (req:RequestWithBody<CreateVideoModel>, res:Response) => {
     let err = postNewVideoValidator(req.body)
     if(err) {
         res.status(400)
@@ -70,7 +76,7 @@ videosRouter.post('/', (req:Request<{},{title:string,author:string,availableReso
     const createdAt = new Date();
     const copiedDate = new Date(createdAt.getTime() + 86400000);
 
-    let video:Video = {
+    let video:VideoType = {
         id:Date.now(),
         title:req.body.title,
         author:req.body.author,

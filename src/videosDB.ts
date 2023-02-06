@@ -1,4 +1,4 @@
-export let videosDB:Video[] = [
+export let videosDB:VideoType[] = [
     {
         id:1,
         title:'Dead Poets Society',
@@ -11,11 +11,11 @@ export let videosDB:Video[] = [
     },
 ]
 
-export function setVideoDB (newDB:Video[]) {
+export function setVideoDB (newDB:VideoType[]) {
     videosDB = newDB
 }
 
-export type Video = {
+export type VideoType = {
     id: number,
     title:string,
     author:string,
