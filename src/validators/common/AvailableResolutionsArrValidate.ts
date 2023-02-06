@@ -10,7 +10,7 @@ export const availableResolutionsArrValidate = (arr:any) => {
     else if(!(Array.isArray(arr))) err.push(incorrectTypeError('availableResolutions','arr'))
     else {
         for(let item of arr) {
-            //if one of availableResolutions doesn't exist in our resolutionArr throw error
+            //if availableResolutions doesn't exist in our resolutionArr throw error
             if(!(resolutionArr.includes(item))) {
                 err.push( incorrectResolutionError(item,"availableResolutions"))
             }
