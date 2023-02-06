@@ -1,6 +1,6 @@
-import express,{Request,Response} from 'express'
+import express from 'express'
 import {videosRouter} from "./routes/videos-router";
-
+import {testingRouter} from "./routes/testing-router";
 
 export const app = express()
 const port = 3000
@@ -8,19 +8,11 @@ const port = 3000
 app.use(express.json())
 
 
-
-
-
-videosRouter.get('/', (req:Request, res:Response) => {
-    res.send('Hello World!')
-})
-
 let baseUrl = "/hometask_01/api"
 
+
 app.use(baseUrl + '/videos',videosRouter)
-app.use(baseUrl + '/testing',videosRouter)
-
-
+app.use(baseUrl + '/testing',testingRouter)
 
 
 
